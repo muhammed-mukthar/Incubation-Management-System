@@ -21,8 +21,8 @@ function Signup() {
             </p>
             <form >
               <div className="grid grid-cols-2 gap-5">
-               <input type="text " placeholder="First Name" className="border border-gray-400  py-1 px-2"  />
-               <input type="text " placeholder="Sur Name" className="border border-gray-400 py-1 px-2"  />
+               <input type="text " placeholder="name" className="border border-gray-400  py-1 px-2"  />
+               <input type="text " placeholder="company" className="border border-gray-400 py-1 px-2"  />
               </div>
               <div className="mt-5">
               <input type="text " placeholder="email " className="border border-gray-400 py-1 px-2 w-full"  />
