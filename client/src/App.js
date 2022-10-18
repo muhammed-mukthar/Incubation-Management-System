@@ -1,10 +1,12 @@
-import Form from "./pages/Form";
+import Application from "./pages/Application";
+
 
 
 function App() {
   return (
     <div className="App">
-<Form/>
+<Application/>
+
     </div>
   )
 }
