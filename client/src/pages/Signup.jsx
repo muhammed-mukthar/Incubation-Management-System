@@ -4,6 +4,7 @@ import image1 from "../assets/laptop.jpg";
 import axios from 'axios'
 import {userUrl} from '../constants/constant'
 import { useState } from "react";
+import {Link,useNavigate} from 'react-router-dom'
 function Signup() {
 
 
@@ -12,6 +13,7 @@ function Signup() {
   const [email, Setemail] = useState("");
   const [password, Setpassword] = useState("");
   const [error, setError] = useState("");
+  const navigate=useNavigate()
 
   let details={
     name,company,email,password
@@ -26,7 +28,10 @@ function Signup() {
     } else {
         console.log(details);
       await  axios.post(`${userUrl}/api/auth/register`, details).then((reponse) => {
-            console.log('signup success');
+        console.log(reponse);
+        if(reponse.data.savedUser){
+          navigate('/')
+        }
         })
     }
   }
