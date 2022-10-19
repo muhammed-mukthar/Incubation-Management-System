@@ -38,6 +38,17 @@ router.post('/upload/:id',function(req, res, next){
       res.json(err)
     })
   })
+
+  router.get('/status/:id', (req, res, next) => {
+    let userId=req.params.id
+    ApplicationModel.findOne({userId:userId}).then((data)=>{
+      res.json(data);
+   }).catch(()=>{
+      let err='Something went wrong!'
+      res.json({err:err});
+   })
+   })
+  
   
 
 module.exports=router

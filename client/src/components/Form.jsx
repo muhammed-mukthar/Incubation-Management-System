@@ -1,5 +1,5 @@
 
-import NAV from "../components/nav";
+import NAV from "./nav";
 
 import React, { useEffect, useState } from 'react'
 
@@ -10,15 +10,18 @@ import  { useContext } from 'react'
 
 import { UserContext } from '../context/UserContext'
 
+
+
 function Form() {
 
 
   const { userDetails, setUserDetails } = useContext(UserContext)
-  console.log(userDetails,'sdfdsfd');
+ 
   const navigate=useNavigate()
 
   const [image, setImage] = useState('')
   const [errorMessage, setErrorMessage] = useState('')
+  const [token, setToken] = useState('')
   const [application, setApplication] = useState({
     name: "",
     phone: "",
@@ -38,6 +41,7 @@ function Form() {
     incubation_type: "",
     proposal: "",
   })
+
 
   function handleSubmit(e) {
     e.preventDefault()
@@ -74,11 +78,12 @@ function Form() {
 
      
 
-        Axios.post(`${userUrl}/api/users/upload/${userDetails._id}`,{...application}).then((response) => {
+        Axios.post(`${userUrl}/api/users/upload/${userDetails._id}`,{...application},{ headers: {"token" : `Bearer ${token}`}}).then((response) => {
+          
           localStorage.setItem('user', JSON.stringify(response.data))
           setUserDetails(response.data)
             console.log(response.data+ "this is response after update");
-            navigate('/')
+            navigate('/pending')
         }).catch((err) => {  
             console.log('error')
         })
@@ -92,6 +97,11 @@ function Form() {
   function handleChange(e){ 
       setApplication({ ...application, [e.target.name]: e.target.value })
   }
+  useEffect(() => {
+ 
+     setToken(localStorage.getItem('userToken'))
+     
+  }, [])
 
 
   return (

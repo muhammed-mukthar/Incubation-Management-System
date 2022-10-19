@@ -36,15 +36,7 @@ function Signup() {
     }
   }
 
-  useEffect(() => {
-    const token = localStorage.getItem('userToken')
-    if (token) {
-        navigate('/home')
-    } else {
-        navigate('/')
-    }
-  }, [])
-  
+ 
   return (
     <div className="min-h-screen py-40 bg-violet-500">
       <div className="container mx-auto">
@@ -58,13 +50,13 @@ function Signup() {
           >
             <h1 className="text-white text-3xl mb-3 ">Welcome</h1>
             <div>
-              <p className="text-white">
+              <h5 className="text-white">
                 Already have an Account
-                <a href="#" className="text-purple-500 font-semibold">
+            <Link to=''> <p className="text-purple-500 font-semibold">
                   
                   Login
-                </a>
-              </p>
+                </p></Link>   
+              </h5>
             </div>
           </div>
           <div className="w:full lg:w-1/2 px-12  py-16">

@@ -1,9 +1,11 @@
 import { BrowserRouter as Router, Route, Routes, } from 'react-router-dom'
-import Form from './pages/Form';
+import Form from './components/Form';
 import Login from './pages/Login';
 import Signup from "./pages/Signup";
 import UserHome from './pages/UserHome';
 import User from './context/UserContext'
+import Pending from './components/Pending';
+import Home from './pages/Home';
 
 
 function App() {
@@ -13,9 +15,10 @@ function App() {
        <Router>
        
           <Routes>
-            <Route path="/" element={<Login />} />
+            <Route path="/"  element={<Login />} />
             <Route path="/signup" element={<Signup/>} />
-            <Route path="/home" element={<Form/>} />
+            <Route path="/home" element={<Home/>} />
+            <Route path="/pending" element={<Pending/>} />
             
           
 
