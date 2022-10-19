@@ -2,7 +2,9 @@ import React from 'react'
 
 function UserHome() {
   return (
-    <div>userHome</div>
+    <div>
+        <div className='grid  '></div>
+    </div>
   )
 }
 

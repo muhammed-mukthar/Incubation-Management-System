@@ -1,7 +1,87 @@
-import React from "react";
+
 import NAV from "../components/nav";
 
+import React, { useEffect, useState } from 'react'
+
+import axios from 'axios'
+import {userUrl} from '../constants/constant'
+import { useNavigate } from 'react-router-dom'
+
+import { decodeToken } from 'react-jwt'
 function Form() {
+  const navigate = useNavigate()
+    const token = localStorage.getItem('userToken')
+    const user= decodeToken(token)
+    // console.log(user.id);
+    useEffect(() => {
+        if (token) {
+            if (!user) {
+                localStorage.removeItem('UserToken')
+                navigate('/')
+            } else {
+                console.log(user);
+            }
+        }
+    }, [])
+
+    
+
+    const initialValues = {
+        name: '',
+        email: '',
+        address: '',
+        city: '',
+        state: '',
+        phone: '',
+         company_name: "",
+    team_and_bg: "",
+    company_and_products: "",
+    problem: "",
+    solution: "",
+    value_proposition: "",
+    revenue_model: "",
+    market_size: "",
+    market_plan: "",
+    incubation_type: "",
+    proposal: ""
+    }
+    const [formValues, setFormvalues] = useState(initialValues)
+    const [formError, setFormError] = useState()
+    const [logo, setLogo] = useState()
+
+    const handleImage = (e) => {
+        setLogo(e.target.files[0])
+
+    }
+    const handleChange = (e) => {
+        const { name, value } = e.target
+        setFormvalues({ ...formValues, [name]: value })
+        // console.log(formValues)
+    }
+    const handleSubmit = () => {
+        if (!logo || formValues.name === '' || formValues.email === '' || formValues.address === '' || formValues.city === '' || formValues.state === '' || formValues.phoneno === '' || formValues.companyname === '' ||
+            formValues.teamandbackground === '' || formValues.companyandproduct === '' || formValues.problem === '' || formValues.solution === '' || formValues.valueproposition === '' || formValues.competators === '' || formValues.revenue === '' ||
+            formValues.potentialmarketsize === '' || formValues.plan === '' || formValues.type === '' || formValues.businessproposal === '') {
+            setFormError('enter all the required fields')
+        } else {
+            const data = new FormData()
+            console.log("qwerty")
+            data.append("logo", logo)
+            data.append("data", JSON.stringify(formValues))
+            const config = {
+                headers: {
+                    'content-type': 'multipart/form-data'
+                }
+            }
+
+            axios.post(`${userUrl}/formSubmit/${user.id}`, data, config, token).then((response) => {
+                console.log(response);
+    navigate('/processing')
+            }).catch((err) => {
+                console.log('error')
+            })
+        }
+    }
   return (
     <div className="bg-gray-500 h">
       <NAV />
@@ -22,6 +102,8 @@ function Form() {
                   </label>
                   <input
                     type="text"
+                    name="name"
+                    onChange={handleChange}
                     id="name"
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
                     placeholder=""
@@ -34,8 +116,11 @@ function Form() {
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
                   >
                     Address*
+                    
                   </label>
                   <input
+                  name="address"
+                  onChange={handleChange}
                     type="text"
                     id="address"
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
@@ -54,7 +139,9 @@ function Form() {
                    City*
                   </label>
                   <input
-                    type="text"
+                      name='city'
+                      type="text"
+                      onChange={handleChange}
                     id="city"
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
                     placeholder=""
@@ -69,7 +156,9 @@ function Form() {
                     State*
                   </label>
                   <input
-                    type="text"
+                   name='state'
+                   type="text"
+                   onChange={handleChange}
                     id="state"
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
                     required=""
@@ -86,7 +175,9 @@ function Form() {
                    Email*
                   </label>
                   <input
-                    type="email"
+                     name='email'
+                     type="email"
+                     onChange={handleChange}
                     id="email"
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
                     placeholder=""
@@ -101,7 +192,9 @@ function Form() {
                     Phone*
                   </label>
                   <input
-                    type="number"
+                type="number"
+                name='phoneno'
+                onChange={handleChange}
                     id="phone"
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
                     required=""
@@ -119,6 +212,8 @@ function Form() {
                   </label>
                   <input
                     type="text"
+                    name='companyname'
+                        onChange={handleChange}
                     id="company"
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
                     placeholder=""
