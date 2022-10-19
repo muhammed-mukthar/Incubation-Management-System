@@ -36,6 +36,15 @@ function Signup() {
     }
   }
 
+  useEffect(() => {
+    const token = localStorage.getItem('userToken')
+    if (token) {
+        navigate('/home')
+    } else {
+        navigate('/')
+    }
+  }, [])
+  
   return (
     <div className="min-h-screen py-40 bg-violet-500">
       <div className="container mx-auto">

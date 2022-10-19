@@ -3,12 +3,13 @@ import Form from './pages/Form';
 import Login from './pages/Login';
 import Signup from "./pages/Signup";
 import UserHome from './pages/UserHome';
-
+import User from './context/UserContext'
 
 
 function App() {
   return (
     <div className="App">
+      <User>
        <Router>
        
           <Routes>
@@ -22,7 +23,7 @@ function App() {
           </Routes>
       
         </Router>
-
+        </User>
     </div>
   )
 }

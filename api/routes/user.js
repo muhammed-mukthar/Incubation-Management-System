@@ -20,5 +20,23 @@ router.get('/find/:id',verifyTokenandAdmin,userController.get_user)
 router.get('/getusers',verifyTokenandAdmin,userController.all_user)
 
 
+//form submit
+
+router.post('/upload/:id',function(req, res, next){
+    const userId=req.params.id
+    req.body.userId=userId
+  
+    ApplicationModel.create(req.body).then((response)=>{
+      User.findOneAndUpdate({_id:userId},{$set:{isRegistered:true}}).then((data)=>{
+        data.isRegistered=true
+        res.json(data)
+      }).catch((err)=>{
+        res.json(err)
+      })
+    }).catch((err)=>{
+      res.json(err)
+    })
+  })
+  
 
 module.exports=router
