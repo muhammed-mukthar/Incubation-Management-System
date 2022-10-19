@@ -27,8 +27,8 @@ const user_Update=async(req,res)=>{
 const all_user=async(req,res)=>{
     const query=req.query.new
     try{
-        const users= query?await User.find().sort({_id:-1}).limit(5): await User.find()
-        res.status(200).json(users)
+        const users= query?await User.find({isBlocked:false}).sort({_id:-1}).limit(5): await User.find({isBlocked:false})
+        res.status(200).json({users:users})
 
     }catch(err){
         res.status(500).json('error has occured while getting user')

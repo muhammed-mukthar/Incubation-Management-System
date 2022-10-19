@@ -18,7 +18,7 @@ router.get('/find/:id',verifyTokenandAdmin,userController.get_user)
 
 //get all users
 
-router.get('/getusers',verifyTokenandAdmin,userController.all_user)
+router.get('/getusers',userController.all_user)
 
 
 //form submit

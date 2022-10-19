@@ -6,6 +6,9 @@ import UserHome from './pages/UserHome';
 import User from './context/UserContext'
 import Pending from './components/Pending';
 import Home from './pages/Home';
+import NavAdmin from './components/Admin/NavAdmin';
+import Usermang from './components/Admin/Usermang';
+import Dashboard from './components/Admin/Dashboard';
 
 
 function App() {
@@ -19,6 +22,7 @@ function App() {
             <Route path="/signup" element={<Signup/>} />
             <Route path="/home" element={<Home/>} />
             <Route path="/pending" element={<Pending/>} />
+            <Route path="/check"  element={<Dashboard/>} />
             
           
 
