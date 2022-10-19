@@ -14,6 +14,7 @@ function Form() {
 
 
   const { userDetails, setUserDetails } = useContext(UserContext)
+  console.log(userDetails,'sdfdsfd');
   const navigate=useNavigate()
 
   const [image, setImage] = useState('')
@@ -73,7 +74,7 @@ function Form() {
 
      
 
-        Axios.post(`http://localhost:4000/upload/${userDetails._id}`,{...application}).then((response) => {
+        Axios.post(`${userUrl}/api/users/upload/${userDetails._id}`,{...application}).then((response) => {
           localStorage.setItem('user', JSON.stringify(response.data))
           setUserDetails(response.data)
             console.log(response.data+ "this is response after update");

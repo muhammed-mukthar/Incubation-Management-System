@@ -26,6 +26,7 @@ const navigate=useNavigate()
           // console.log('login successs');
           console.log(response);
           localStorage.setItem("userToken", JSON.stringify(response.data.accessToken))
+          localStorage.setItem("user", JSON.stringify(response.data))
 
           navigate('/home')
       }).catch((error) => {

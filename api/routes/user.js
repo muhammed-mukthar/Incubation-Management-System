@@ -1,4 +1,5 @@
 const User = require('../model/user')
+const ApplicationModel=require('../model/applicationModel')
 const {verifyToken,verifyTokenandAuthorization, verifyTokenandAdmin}=require('./verifytoken')
 const userController=require('../controller/userController')
 const router=require('express').Router()
