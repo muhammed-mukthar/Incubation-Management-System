@@ -60,6 +60,7 @@ router.post('/upload/:id',function(req, res, next){
       res.json({err:err});
    })
    })
+   
    router.get('/unblock/:id',async (req, res, next) => {
     let userId=req.params.id
     User.findOneAndUpdate({_id:userId},{$set:{isBlocked:false}}).then((users)=>{

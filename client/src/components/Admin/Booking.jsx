@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react'
 import Modal from 'react-modal'
 import Axios from 'axios';
 import NavAdmin from './NavAdmin';
+import { adminUrl } from "../../constants/constant";
+
 
 
 const customStyles = {
@@ -22,7 +24,7 @@ const customStyles = {
   },
 };
 
-function BookingSlots() {
+function Booking() {
   Modal.setAppElement('#root')
   const [modal, setModal] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
@@ -48,8 +50,8 @@ function BookingSlots() {
   const [slotF, setSlotF] = useState(F)
 
   useEffect(() => {
-    Axios.get('http://localhost:4000/admin/slots').then((response) => {
-      if (response.data) {
+    Axios.get(`${adminUrl}/slots`).then((response) => {
+      if (response.data,'fsffssfdfsd') {
         setSlotA(response.data.A)
         setSlotB(response.data.B)
         setSlotC(response.data.C)
@@ -59,9 +61,10 @@ function BookingSlots() {
       } else {
         setErrorMessage('Something went wrong')
       }
-      Axios.get('http://localhost:4000/admin/approved').then((response) => {
+      Axios.get(`${adminUrl}/approved`).then((response) => {
+        console.log(response.data,'jsdfkhjfsdjhfdhj');
         if (response.data) {
-          setForms(response.data.data)
+          setForms(response.data.info)
         } else {
           setErrorMessage('Something went wrong')
         }
@@ -75,8 +78,8 @@ function BookingSlots() {
     })
     
   }, [])
-  console.log(slotA);
-  console.log('this is a');
+
+
 
   function handleCompany() {
     if (selected == 0) {
@@ -84,9 +87,9 @@ function BookingSlots() {
       setErrorMessage('company is not selected')
     } else {
       console.log(selected);
-      Axios.post(`http://localhost:4000/admin/booking/${selected}`, indexof).then((response) => {
+      Axios.post(`${adminUrl}/booking/${selected}`, indexof).then((response) => {
         if (response.data) {
-          console.log(indexof);
+          console.log(indexof,'mukthar');
           let { val, index } = indexof
           val[index].isBooked = true
           setModal(false)
@@ -106,8 +109,8 @@ function BookingSlots() {
       <Modal isOpen={modal} onRequestClose={() => { setModal(false) }} style={customStyles}>
         <p className='text-end'><i onClick={() => { setModal(false) }} className="fa-solid fa-x  "></i></p>
         <label for="countries" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-600">Select a company</label>
-        <select id="countries" name='company' onChange={(e) => { if (e.target.value !== 0) { setselected(e.target.value) } else { setModal(false) } }} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-          <option selected value={0}>Choose a company</option>
+        <select id="countries" name='company' onChange={ (e) => { if (e.target.value !== 0) { setselected(e.target.value) } else { setModal(false) } }} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+          <option selected value={0} >Choose a company</option>
           {forms.map((item) => {
             if (item.isBooked == false) { return <option key={item._id} value={item._id}>{item.company_name}</option> }
           })}
@@ -156,7 +159,7 @@ function BookingSlots() {
   )
 }
 
-export default BookingSlots
+export default Booking
 
 const Slots = ({ values, setModal, setIndex, forms }) => {
   const [val, setVal] = useState(values)

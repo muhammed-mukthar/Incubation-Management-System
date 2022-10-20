@@ -1,10 +1,11 @@
 const ApplicationModel = require('../model/applicationModel')
+const Slot=require('../model/Slots')
 
 const router=require('express').Router()
 
 router.get('/applications', (req, res, next) => {
     ApplicationModel.find({}).then((data)=>{
-      console.log(data);
+      console.log(data,'fdfsds');
       res.json(data);
    }).catch(()=>{
       let err='Something went wrong!'
@@ -53,5 +54,32 @@ router.get('/applications', (req, res, next) => {
     res.json(err)
     })
    })
+
+   router.post('/booking/:id',async (req, res, next) => {
+      let appId=req.params.id
+      let {val, index}=req.body
+      let char=val[index].slot
+      ApplicationModel.findOneAndUpdate({_id:appId},{$set:{isBooked:true, slotId:char}}).then((data)=>{
+        data.isBooked=true
+        data.slotId=char
+        res.json({data});
+     }).catch((err)=>{
+      console.log(err);
+         err='Something went wrong!'
+        res.json({err:err});
+     })
+     })
+  
+     router.get('/slots',async (req, res, next) => {
+      Slot.find().then((response)=>{
+        console.log(response,'fsfssf');
+         res.json(response[0]);
+       }).catch((err)=>{
+      console.log(err);
+         err='Something went wrong!'
+        res.json({err:err});
+     })
+     })
+  
 
 module.exports=router
