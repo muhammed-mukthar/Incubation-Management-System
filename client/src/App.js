@@ -9,12 +9,13 @@ import Home from './pages/Home';
 import NavAdmin from './components/Admin/NavAdmin';
 import Usermang from './components/Admin/Usermang';
 import Dashboard from './components/Admin/Dashboard';
-
+import  Applications from './context/ApplicationContext'
 
 function App() {
   return (
     <div className="App">
       <User>
+        <Applications>
        <Router>
        
           <Routes>
@@ -22,7 +23,7 @@ function App() {
             <Route path="/signup" element={<Signup/>} />
             <Route path="/home" element={<Home/>} />
             <Route path="/pending" element={<Pending/>} />
-            <Route path="/check"  element={<Usermang/>} />
+            <Route path="/check"  element={<Dashboard/>} />
             
           
 
@@ -30,6 +31,7 @@ function App() {
           </Routes>
       
         </Router>
+        </Applications>
         </User>
     </div>
   )
