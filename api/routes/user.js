@@ -49,6 +49,27 @@ router.post('/upload/:id',function(req, res, next){
    })
    })
   
-  
+   router.get('/block/:id',async (req, res, next) => {
+    let userId=req.params.id
+    User.findOneAndUpdate({_id:userId},{$set:{isBlocked:true}}).then((users)=>{
+      users.isBlocked=true
+      res.json({users:users});
+   }).catch((err)=>{
+    console.log(err);
+       err='Something went wrong!'
+      res.json({err:err});
+   })
+   })
+   router.get('/unblock/:id',async (req, res, next) => {
+    let userId=req.params.id
+    User.findOneAndUpdate({_id:userId},{$set:{isBlocked:false}}).then((users)=>{
+      users.isBlocked=false
+      res.json({users:users});
+   }).catch((err)=>{
+    console.log(err);
+       err='Something went wrong!'
+      res.json({err:err});
+   })
+   })
 
 module.exports=router
