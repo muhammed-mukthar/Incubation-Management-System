@@ -33,6 +33,9 @@ router.get('/applications', (req, res, next) => {
    })
    })
 
+
+   
+
    router.get('/pending/:id',async (req, res, next) => {
     const id=req.params.id
     ApplicationModel.findOneAndUpdate({_id:id},{$set:{isPending:true}}).then((data)=>{
@@ -41,6 +44,14 @@ router.get('/applications', (req, res, next) => {
       let err='Something went wrong!'
       res.json({err:err});
    })
+   })
+
+   router.get('/approved',async (req,res)=>{
+    ApplicationModel.find({isApproved:true}).then((data)=>{
+        res.json({info:data})
+    }).catch((err)=>{
+    res.json(err)
+    })
    })
 
 module.exports=router
