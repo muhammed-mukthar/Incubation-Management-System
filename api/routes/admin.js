@@ -13,6 +13,26 @@ router.get('/applications', (req, res, next) => {
 
    })
 
+   router.get('/approve/:id',async (req, res, next) => {
+    const id=req.params.id
+    ApplicationModel.findOneAndUpdate({_id:id},{$set:{isApproved:true}}).then((data)=>{
+      res.json({data:data});
+   }).catch(()=>{
+      let err='Something went wrong!'
+      res.json({err:err});
+   })
+   })
+
+   router.get('/decline/:id',async (req, res, next) => {
+    const id=req.params.id
+    ApplicationModel.findOneAndUpdate({_id:id},{$set:{isDeclined:true}}).then((data)=>{
+      res.json({data:data});
+   }).catch(()=>{
+      let err='Something went wrong!'
+      res.json({err:err});
+   })
+   })
+
    router.get('/pending/:id',async (req, res, next) => {
     const id=req.params.id
     ApplicationModel.findOneAndUpdate({_id:id},{$set:{isPending:true}}).then((data)=>{

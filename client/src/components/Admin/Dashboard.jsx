@@ -69,7 +69,7 @@ function Dashboard() {
     }
     
     function handleApprove(item){
-        Axios.get(`http://localhost:4000/admin/approve/${item._id}`).then((response) => {
+        Axios.get(`${adminUrl}/approve/${item._id}`).then((response) => {
             if (response.data) {
                 setStatus(new Date())
             } else {
@@ -82,7 +82,7 @@ function Dashboard() {
     }
     
     function handleDeclined(item){
-        Axios.get(`http://localhost:4000/admin/decline/${item._id}`).then((response) => {
+        Axios.get(`${adminUrl}/decline/${item._id}`).then((response) => {
             if (response.data) {
                 setStatus(new Date())
             } else {
@@ -224,41 +224,58 @@ function Dashboard() {
         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
                 <th scope="col" class="py-3 px-6">
-                    Product name
+                    Index
                 </th>
                 <th scope="col" class="py-3 px-6">
-                    Color
+                   Company Name
                 </th>
                 <th scope="col" class="py-3 px-6">
-                    Category
+                    Company Details
                 </th>
                 <th scope="col" class="py-3 px-6">
-                    Price
+                    
                 </th>
                 <th scope="col" class="py-3 px-6">
-                    <span class="sr-only">Edit</span>
+                    <span class="sr-only"></span>
+                </th>
+                <th scope="col" class="py-3 px-6">
+                    <span class="sr-only"></span>
                 </th>
             </tr>
         </thead>
         <tbody>
-            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                <th scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    Apple MacBook Pro 17"
-                </th>
-                <td class="py-4 px-6">
-                    Sliver
+       
+            { forms.map((obj, index) => {
+                                    if(obj.isPending){   
+                                        return  ( <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+             <td class="py-4 px-6">
+             {index + 1}
                 </td>
                 <td class="py-4 px-6">
-                    Laptop
+                {obj.company_name}
                 </td>
                 <td class="py-4 px-6">
-                    $2999
+                Products and services: {obj.company_and_products}
                 </td>
+                <td class="py-4 px-6">
+                <button className="px-2 py-1 text-white font-medium rounded bg-blue-900" onClick={() => { openModal(obj) }}>Open</button>
+                </td>
+              { obj.isDeclined?  <td class="py-4 px-6 text-right">
+                    <p class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Declined</p>
+                </td>:(obj.isApproved?
                 <td class="py-4 px-6 text-right">
-                    <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-                </td>
-            </tr>
-           
+                <p class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Approved</p>
+            </td>:<td class="py-4 px-6 text-right">
+                    <button onClick={()=>{handleApprove(obj)}} class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Approve</button>
+                </td>)
+                                    
+            }
+               {obj.isDeclined? <td className=' py-4 px-6 text-right' ><p  class="font-medium text-blue-600 dark:text-blue-500 hover:underline"> DECLINED</p></td>:
+                                      (obj.isApproved? <td ><p class="font-medium text-blue-600 dark:text-blue-500 hover:underline"> Approved</p></td>:
+                                      <td className=' py-4 px-6 text-right'><button onClick={()=>{handleDeclined(obj)}} className="px-2 py-1 text-white font-medium rounded bg-red-600" >Decline</button></td>                           
+                                      )}
+            </tr>)}})}
+        
         </tbody>
     </table>
 </div>
