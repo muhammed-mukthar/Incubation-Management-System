@@ -7,7 +7,7 @@ const router = require("express").Router();
 
 const {
   
-  verifyTokenandAdmin,
+  verifyAdminToken,
 } = require("./verifytoken");
 
 router.post("/login", async (req, res) => {
@@ -38,7 +38,7 @@ router.post("/login", async (req, res) => {
   }
 });
 
-router.get("/applications",async (req, res, next) => {
+router.get("/applications",verifyAdminToken,async (req, res, next) => {
 let data=await  ApplicationModel.find({})
       if(data){
             res.json(data);

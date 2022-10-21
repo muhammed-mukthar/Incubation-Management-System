@@ -11,7 +11,7 @@ const TOKEN= localStorage.getItem('userToken')
 const ADMINTOKEN= localStorage.getItem('admintoken')
 
 
-console.log(ADMINTOKEN);
+
 
 export const userRequest=axios.create({
     baseURL:userUrl,

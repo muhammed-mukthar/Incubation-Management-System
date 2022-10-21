@@ -10,7 +10,7 @@ function NAV() {
     localStorage.removeItem('user')
     localStorage.removeItem('userToken')
     setUserDetails(null); 
-    removeCookie("jwt");
+   
     navigate('/');
   }
 

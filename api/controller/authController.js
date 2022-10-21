@@ -3,8 +3,6 @@ const User = require('../model/user')
 const  Cryptojs=require('crypto-js');
 const { json } = require('express');
 const jwt=require('jsonwebtoken')
-
-
 //register
 
 const User_register=async(req,res)=>{
