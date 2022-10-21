@@ -30,14 +30,14 @@ const user_Login=async(req,res)=>{
     try{
         const user=await User.findOne({email:req.body.email})
    
-        !user&& res.status(401).json("wrong credentials")
+        !user&& res.status(401).json({err:"wrong credentials"})
         const hashedPassword=Cryptojs.AES.decrypt(
 
             user.password,process.env.PASS_SEC 
             );
       const  Originalpassword=hashedPassword.toString(Cryptojs.enc.Utf8)
         Originalpassword != req.body.password && 
-        res.status(401).json("wrong credentials!")
+        res.status(401).json({err:"wrong credentials"})
             //setting jwt token
             console.log(user);
         const accessToken=jwt.sign({

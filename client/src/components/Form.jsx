@@ -10,8 +10,6 @@ import  { useContext } from 'react'
 
 import { UserContext } from '../context/UserContext'
 
-
-
 function Form() {
 
 
@@ -178,7 +176,8 @@ function Form() {
                     State*
                   </label>
                   <input
-                  name='state' onChange={(e) => handleChange(e)} 
+                  name='state'
+                   onChange={(e) => handleChange(e)} 
                    type="text"
                  
                     id="state"
@@ -306,7 +305,7 @@ function Form() {
     <input checked="" id="bordered-radio-2" type="radio"   value="virtual" onChange={(e) => {
                 if (e.target.checked) { setApplication({ ...application, [e.target.name]: e.target.value }) }
               }} name="incubation_type" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
-    <label for="bordered-radio-2" className="py-4 ml-2 w-full text-sm font-medium text-gray-900 dark:text-gray-300">Physical Incubation</label>
+    <label for="bordered-radio-2" className="py-4 ml-2 w-full text-sm font-medium text-gray-900 dark:text-gray-300">Virtual Incubation</label>
 </div>
         </div>
 

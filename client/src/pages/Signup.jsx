@@ -25,7 +25,14 @@ function Signup() {
         setError('Enter All Details')
     } else if (password.length < 5) {
         setError('Enter Minimum 5 chararcters')
-    } else {
+    }else if (!email.match(/^[A-Za-z0-9._-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/)) {
+      setError("Enter a valid email");
+  } else if(!company.match(/^[A-Z]+$/i)){
+    setError("invalid charactes used")
+  }else if(!name.match(/^[A-Z]+$/i)){
+    setError("invalid charactes used")
+  }
+    else {
         console.log(details);
       await  axios.post(`${userUrl}/api/auth/register`, details).then((reponse) => {
         console.log(reponse);
@@ -52,7 +59,7 @@ function Signup() {
             <div>
               <h5 className="text-white">
                 Already have an Account
-            <Link to=''> <p className="text-purple-500 font-semibold">
+            <Link to='/'> <p className="text-purple-500 font-semibold">
                   
                   Login
                 </p></Link>   

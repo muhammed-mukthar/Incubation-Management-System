@@ -6,7 +6,7 @@ const verifyToken=(req,res,next)=>{
     if(authHeader){
         const token=authHeader.split(" ")[1];
         jwt.verify(token,process.env.JWT_SEC,(err,user)=>{
-             if(err) res.status(403).json('Token is not valid')
+             if(err) res.status(403).json({authError:true})
         req.user=user;
         next()
         });
@@ -14,6 +14,29 @@ const verifyToken=(req,res,next)=>{
         return res.status(401).json('you are not authenticated')
     }
         };
+
+        const verifyAdminToken=(req,res,next)=>{
+            const authHeader=req.headers.admintoken;
+            console.log(req.headers);
+            if(authHeader){
+                const token=authHeader.split(" ")[1];
+                jwt.verify(token,process.env.JWT_SEC,(err,user)=>{
+                     if(err){
+                        console.log(err);
+                         res.status(403).json({authError:true})
+                         
+                     }
+                console.log('inside');
+                next()
+                });
+            }else{
+                 res.status(401).json('you are not authenticated')
+                next()
+            }
+                };
+                    
+
+
 const verifyTokenandAuthorization=(req,res,next)=>{
     verifyToken(req,res,()=>{
         if(req.params.id|| req.user.isAdmin){
@@ -34,4 +57,4 @@ const verifyTokenandAdmin=(req,res,next)=>{
 
     })
 }
-module.exports={verifyToken,verifyTokenandAuthorization,verifyTokenandAdmin}
+module.exports={verifyToken,verifyTokenandAuthorization,verifyTokenandAdmin,verifyAdminToken}

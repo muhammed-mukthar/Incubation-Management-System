@@ -1,20 +1,20 @@
 const User = require('../model/user')
 const ApplicationModel=require('../model/applicationModel')
-const {verifyToken,verifyTokenandAuthorization, verifyTokenandAdmin}=require('./verifytoken')
+const {verifyToken}=require('./verifytoken')
 const userController=require('../controller/userController')
 const router=require('express').Router()
 
 
 //update user
-router.put("/:id",verifyTokenandAuthorization,userController.user_Update)
+router.put("/:id",userController.user_Update)
 
 //delete
 
-router.delete('/:id',verifyTokenandAuthorization,userController.delete_user)
+router.delete('/:id',userController.delete_user)
 
 //get user
 
-router.get('/find/:id',verifyTokenandAdmin,userController.get_user)
+router.get('/find/:id',userController.get_user)
 
 //get all users
 

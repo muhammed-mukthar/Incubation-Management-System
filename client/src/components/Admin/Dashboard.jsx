@@ -1,7 +1,7 @@
 import React,{useContext,useState,useEffect} from 'react'
 import Axios from 'axios';
 import NavAdmin from './NavAdmin'
-import { adminUrl } from "../../constants/constant";
+import { AdminRequest } from "../../constants/constant";
 import Modal from 'react-modal'
 import { ApplicationContext } from '../../context/ApplicationContext'
 
@@ -35,10 +35,11 @@ function Dashboard() {
     const [errorMessage, setErrorMessage] = useState('')
     const [modalItem, setModalItem] = useState({})
     const [status, setStatus] = useState('')
+    
 
 
     useEffect(() => {
-        Axios.get(`${adminUrl}/applications`).then((response) => {
+        AdminRequest.get(`/applications`).then((response) => {
             console.log(response);
             if (response.data) {
                 const { data } = response
@@ -55,7 +56,7 @@ function Dashboard() {
     
     function handlePending(item, e) {
         e.preventDefault()
-        Axios.get(`${adminUrl}/pending/${item._id}`).then((response) => {
+        AdminRequest.get(`/pending/${item._id}`).then((response) => {
             if (response.data) {
                 setStatus(new Date())
             } else {
@@ -69,7 +70,7 @@ function Dashboard() {
     }
     
     function handleApprove(item){
-        Axios.get(`${adminUrl}/approve/${item._id}`).then((response) => {
+        AdminRequest.get(`/approve/${item._id}`).then((response) => {
             if (response.data) {
                 setStatus(new Date())
             } else {
@@ -82,7 +83,7 @@ function Dashboard() {
     }
     
     function handleDeclined(item){
-        Axios.get(`${adminUrl}/decline/${item._id}`).then((response) => {
+        AdminRequest.get(`/decline/${item._id}`).then((response) => {
             if (response.data) {
                 setStatus(new Date())
             } else {
@@ -182,9 +183,11 @@ function Dashboard() {
                 </th>
                 <th scope="col" class="py-3 px-6">
                 Company Name
+                </th> <th scope="col" class="py-3 px-6">
+                   Open request
                 </th>
                 <th scope="col" class="py-3 px-6">
-                   Company Details
+                   change status
                 </th>
                 
             </tr>
@@ -201,11 +204,12 @@ function Dashboard() {
                 {obj.company_name}
                 </td>
                 
-                <td class="py-4 px-6 text-right flex justify-between ">
+                <td class="py-4 px-6 text-center  ">
 
                     <button class="font-medium text-amber-600 dark:text-amber-500 hover:underline"  onClick={() => openModal(obj)}>show</button>
-                    
-                    <button  class="font-medium text-blue-600 dark:text-blue-500 hover:underline" onClick={(e) => handlePending(obj, e)} >Edit</button>
+                    </td>
+                    <td class="py-4 px-6 text-center ">
+                    <button  class="font-medium text-blue-600 dark:text-blue-500 hover:underline" onClick={(e) => handlePending(obj, e)} >pending</button>
                 </td>
             </tr>}
             })

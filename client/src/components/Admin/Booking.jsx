@@ -51,7 +51,7 @@ function Booking() {
 
   useEffect(() => {
     Axios.get(`${adminUrl}/slots`).then((response) => {
-      if (response.data,'fsffssfdfsd') {
+      if (response.data) {
         setSlotA(response.data.A)
         setSlotB(response.data.B)
         setSlotC(response.data.C)
@@ -59,22 +59,22 @@ function Booking() {
         setSlotE(response.data.E)
         setSlotF(response.data.F)
       } else {
-        setErrorMessage('Something went wrong')
+  
       }
       Axios.get(`${adminUrl}/approved`).then((response) => {
         console.log(response.data,'jsdfkhjfsdjhfdhj');
         if (response.data) {
           setForms(response.data.info)
         } else {
-          setErrorMessage('Something went wrong')
+          setErrorMessage('Something went wrong f')
         }
       }).catch((err) => {
         console.log(err);
-        setErrorMessage('Something went wrong')
+        setErrorMessage('Something went wrong e')
       })
     }).catch((err) => {
       console.log(err);
-      setErrorMessage('Something went wrong')
+      setErrorMessage('Something went wrong d')
     })
     
   }, [])
@@ -82,9 +82,9 @@ function Booking() {
 
 
   function handleCompany() {
-    if (selected == 0) {
+    if (selected === 0) {
       setModal(false)
-      setErrorMessage('company is not selected')
+      setErrorMessage('company is not selected c')
     } else {
       console.log(selected);
       Axios.post(`${adminUrl}/booking/${selected}`, indexof).then((response) => {
@@ -94,11 +94,11 @@ function Booking() {
           val[index].isBooked = true
           setModal(false)
         } else {
-          setErrorMessage('Something went wrong')
+          setErrorMessage('Something went wrong a')
         }
       }).catch((err) => {
         console.log(err);
-        setErrorMessage('Something went wrong')
+        setErrorMessage('Something went wrong b')
       })
     }
   }
@@ -112,7 +112,7 @@ function Booking() {
         <select id="countries" name='company' onChange={ (e) => { if (e.target.value !== 0) { setselected(e.target.value) } else { setModal(false) } }} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
           <option selected value={0} >Choose a company</option>
           {forms.map((item) => {
-            if (item.isBooked == false) { return <option key={item._id} value={item._id}>{item.company_name}</option> }
+            if (item.isBooked === false) { return <option key={item._id} value={item._id}>{item.company_name}</option> }
           })}
         </select>
         <button onClick={(handleCompany)} className='bg-blue-900 border border-gray-300 text-white px-2 py-1 rounded m-1'>Submit</button>

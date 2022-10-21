@@ -1,17 +1,19 @@
 import { BrowserRouter as Router, Route, Routes, } from 'react-router-dom'
-import Form from './components/Form';
+
 import Login from './pages/Login';
 import Signup from "./pages/Signup";
-import UserHome from './pages/UserHome';
+
 import User from './context/UserContext'
 import Pending from './components/Pending';
 import Home from './pages/Home';
-import NavAdmin from './components/Admin/NavAdmin';
-import Usermang from './components/Admin/Usermang';
-import Dashboard from './components/Admin/Dashboard';
+
 import  Applications from './context/ApplicationContext'
-import Track from './components/Admin/Track';
-import Booking from './components/Admin/Booking';
+
+import LoginAdmin from './pages/LoginAdmin';
+import AdminDash from './pages/AdminDash';
+import AdminTrack from './pages/AdminTrack';
+import UserBlock from './pages/UserBlock';
+import AdminBooking from './pages/AdminBooking';
 
 function App() {
   return (
@@ -25,11 +27,13 @@ function App() {
             <Route path="/signup" element={<Signup/>} />
             <Route path="/home" element={<Home/>} />
             <Route path="/pending" element={<Pending/>} />
-            <Route path="/check"  element={<Booking/>} />
-            
-          
-
-
+           
+            <Route path="/admin"  element={<LoginAdmin/>} />
+            <Route path="/admin/dashboard"  element={<AdminDash/>} />
+            <Route path="/admin/track"  element={<AdminTrack/>} />
+            <Route path="/admin/userblock"  element={<UserBlock/>} />
+            <Route path="/admin/booking"  element={<AdminBooking/>} />
+    
           </Routes>
       
         </Router>
