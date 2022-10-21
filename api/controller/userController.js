@@ -1,5 +1,6 @@
 const User = require('../model/user')
 
+const ApplicationModel=require('../model/applicationModel')
 
 
 //user update
@@ -73,4 +74,55 @@ const get_user=async(req,res)=>{
 }
 
 
-module.exports={user_Update,all_user,delete_user,get_user}
+const UploadForm=function(req, res, next){
+    const userId=req.params.id
+    req.body.userId=userId
+  
+    ApplicationModel.create(req.body).then((response)=>{
+      User.findOneAndUpdate({_id:userId},{$set:{isRegistered:true}}).then((data)=>{
+        data.isRegistered=true
+        res.json(data)
+      }).catch((err)=>{
+        res.json(err)
+      })
+    }).catch((err)=>{
+      res.json(err)
+    })
+  }
+
+  const GetStatus=(req, res, next) => {
+    let userId=req.params.id
+    ApplicationModel.findOne({userId:userId}).then((data)=>{
+      res.json(data);
+   }).catch(()=>{
+      let err='Something went wrong!'
+      res.json({err:err});
+   })
+   }
+
+
+   const BlockUser=async (req, res, next) => {
+    let userId=req.params.id
+    User.findOneAndUpdate({_id:userId},{$set:{isBlocked:true}}).then((users)=>{
+      users.isBlocked=true
+      res.json({users:users});
+   }).catch((err)=>{
+    console.log(err);
+       err='Something went wrong!'
+      res.json({err:err});
+   })
+   }
+
+   const UnBlockUser=async (req, res, next) => {
+    let userId=req.params.id
+    User.findOneAndUpdate({_id:userId},{$set:{isBlocked:false}}).then((users)=>{
+      users.isBlocked=false
+      res.json({users:users});
+   }).catch((err)=>{
+    console.log(err);
+       err='Something went wrong!'
+      res.json({err:err});
+   })
+   }
+
+module.exports={user_Update,all_user,delete_user,get_user,UploadForm,UploadForm,GetStatus,BlockUser,UnBlockUser}
