@@ -29,7 +29,11 @@ const User_register=async(req,res)=>{
 const user_Login=async(req,res)=>{
     try{
         const user=await User.findOne({email:req.body.email})
-   
+        if(user){
+             if(user.isBlocked){
+    res.status(401).json({err:"you are not allowed to login"})
+   }
+
         !user&& res.status(401).json({err:"wrong credentials"})
         const hashedPassword=Cryptojs.AES.decrypt(
 
@@ -51,6 +55,10 @@ const user_Login=async(req,res)=>{
 
 
         res.status(200).json({...others,accessToken})
+        }else{
+            res.status(401).json({err:"user doesn't exist signup"})
+        }
+  
     }catch(err){
         res.status(500),json(err)
     }
