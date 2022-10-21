@@ -1,14 +1,19 @@
 const jwt = require("jsonwebtoken");
 
 const verifyToken = (req, res, next) => {
-  const authHeader = req.headers.token;
+  let authHeader = req.headers.token;
   console.log(req.headers);
   if (authHeader) {
+    authHeader=authHeader.replaceAll('"', '')
     const token = authHeader.split(" ")[1];
     jwt.verify(token, process.env.JWT_SEC, (err, user) => {
-      if (err) res.status(403).json({ authError: true });
-      req.user = user;
-      next();
+      if (err) {
+        console.log(err,'invalid token');
+        res.status(403).json({ authError: true });
+      }else{
+           console.log("inside");
+              next();
+      }
     });
   } else {
     return res.status(401).json("you are not authenticated");
@@ -34,7 +39,7 @@ const verifyAdminToken = (req, res, next) => {
    
     });
   } else {
-    res.status(401).json("you are not authenticated");
+    res.status(401).json({ authError: true });
     next();
   }
 };

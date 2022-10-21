@@ -4,7 +4,7 @@ import { useEffect } from 'react'
 import loginImg from '../assets/table.jpg'
 import axios from 'axios'
 import {useNavigate,Link} from 'react-router-dom'
-import {userUrl} from '../constants/constant'
+import {userUrl,userRequest} from '../constants/constant'
 function Login() {
 
   const [email,SetEmail]=useState('')
@@ -31,7 +31,7 @@ const navigate=useNavigate()
   } else if (password.length > 20) {
       setErrorMessage("Password must be less than 20 characters");
   } else {
-      axios.post(`${userUrl}/api/auth/login`, details).then((response) => {
+    axios.post(`${userUrl}/api/auth/login`, details).then((response) => {
           // console.log('login successs');
           console.log(response);
           localStorage.setItem("userToken", JSON.stringify(response.data.accessToken))

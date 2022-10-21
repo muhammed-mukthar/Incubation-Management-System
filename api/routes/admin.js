@@ -3,12 +3,9 @@ const Slot = require("../model/Slots");
 const Admin = require("../model/admin");
 const Cryptojs = require("crypto-js");
 const jwt = require("jsonwebtoken");
+const {verifyToken,verifyAdminToken}=require('./verifytoken')
 const router = require("express").Router();
 
-const {
-  
-  verifyAdminToken,
-} = require("./verifytoken");
 
 router.post("/login", async (req, res) => {
   let err = "invalid details";
@@ -47,7 +44,7 @@ let data=await  ApplicationModel.find({})
       }
 });
 
-router.get("/approve/:id",async (req, res, next) => {
+router.get("/approve/:id",verifyAdminToken,async (req, res, next) => {
   const id = req.params.id;
   ApplicationModel.findOneAndUpdate({ _id: id }, { $set: { isApproved: true } })
     .then((data) => {
@@ -59,7 +56,7 @@ router.get("/approve/:id",async (req, res, next) => {
     });
 });
 
-router.get("/decline/:id",async (req, res, next) => {
+router.get("/decline/:id",verifyAdminToken,async (req, res, next) => {
   const id = req.params.id;
   ApplicationModel.findOneAndUpdate({ _id: id }, { $set: { isDeclined: true } })
     .then((data) => {
@@ -71,7 +68,7 @@ router.get("/decline/:id",async (req, res, next) => {
     });
 });
 
-router.get("/pending/:id",async (req, res, next) => {
+router.get("/pending/:id",verifyAdminToken,async (req, res, next) => {
   const id = req.params.id;
   ApplicationModel.findOneAndUpdate({ _id: id }, { $set: { isPending: true } })
     .then((data) => {
@@ -83,7 +80,7 @@ router.get("/pending/:id",async (req, res, next) => {
     });
 });
 
-router.get("/approved", async (req, res) => {
+router.get("/approved",verifyAdminToken, async (req, res) => {
   ApplicationModel.find({ isApproved: true })
     .then((data) => {
       res.json({ info: data });
@@ -93,7 +90,7 @@ router.get("/approved", async (req, res) => {
     });
 });
 
-router.post("/booking/:id", async (req, res, next) => {
+router.post("/booking/:id", verifyAdminToken,async (req, res, next) => {
   let appId = req.params.id;
   let { val, index } = req.body;
   let char = val[index].slot;
@@ -113,7 +110,7 @@ router.post("/booking/:id", async (req, res, next) => {
     });
 });
 
-router.get("/slots", async (req, res, next) => {
+router.get("/slots",verifyAdminToken, async (req, res, next) => {
   Slot.find()
     .then((response) => {
       console.log(response, "fsfssf");

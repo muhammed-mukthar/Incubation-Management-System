@@ -2,13 +2,13 @@ import React,{useState,useEffect} from 'react'
 import Axios from 'axios';
 import NavAdmin from './NavAdmin'
 import ProgressBar from "@ramonak/react-progress-bar";
-import { adminUrl } from "../../constants/constant";
+import { adminUrl,AdminRequest } from "../../constants/constant";
 function Track() {
     const [errorMessage, setErrorMessage] = useState('')
     const [forms, setForms] = useState([])
   
       useEffect(()=>{
-          Axios.get(`${adminUrl}/approved`).then((response) => {
+        AdminRequest.get(`approved`).then((response) => {
             console.log(response);
           if (response.data) {
             setForms(response.data.info)

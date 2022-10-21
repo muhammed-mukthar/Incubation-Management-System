@@ -1,6 +1,7 @@
 import React,{useContext,useState,useEffect} from 'react'
 import Axios from 'axios';
 import NavAdmin from './NavAdmin'
+import {useNavigate} from 'react-router-dom'
 import { AdminRequest } from "../../constants/constant";
 import Modal from 'react-modal'
 import { ApplicationContext } from '../../context/ApplicationContext'
@@ -28,6 +29,7 @@ const customStyles = {
 
 
 function Dashboard() {
+    const navigate=useNavigate()
     Modal.setAppElement('#root')
     const [modal, setModal] = useState(false)
     const { applications, setApplications } = useContext(ApplicationContext)
@@ -39,13 +41,15 @@ function Dashboard() {
 
 
     useEffect(() => {
-        AdminRequest.get(`/applications`).then((response) => {
+        AdminRequest.get(`applications`).then((response) => {
             console.log(response);
             if (response.data) {
                 const { data } = response
                 setApplications(data)
                 setForms(data)
-            } else {
+            } else if(response.data.authError){
+                navigate('/admin')
+            } else{
                 setErrorMessage('Something went wrong')
             }
         }).catch((err) => {

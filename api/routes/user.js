@@ -1,29 +1,29 @@
 const User = require('../model/user')
 const ApplicationModel=require('../model/applicationModel')
-const {verifyToken}=require('./verifytoken')
+const {verifyToken,verifyAdminToken}=require('./verifytoken')
 const userController=require('../controller/userController')
 const router=require('express').Router()
 
-
+/* -------------------------------- //pending ------------------------------- */
 //update user
-router.put("/:id",userController.user_Update)
+router.put("/:id",verifyAdminToken,userController.user_Update)
 
 //delete
 
-router.delete('/:id',userController.delete_user)
+router.delete('/:id',verifyAdminToken,userController.delete_user)
 
 //get user
 
-router.get('/find/:id',userController.get_user)
-
+router.get('/find/:id',verifyAdminToken,userController.get_user)
+/* ----------------------------------- jjj ---------------------------------- */
 //get all users
 
-router.get('/getusers',userController.all_user)
+router.get('/getusers',verifyAdminToken,userController.all_user)
 
 
 //form submit
 
-router.post('/upload/:id',function(req, res, next){
+router.post('/upload/:id',verifyToken,function(req, res, next){
     const userId=req.params.id
     req.body.userId=userId
   
@@ -39,7 +39,7 @@ router.post('/upload/:id',function(req, res, next){
     })
   })
 
-  router.get('/status/:id', (req, res, next) => {
+  router.get('/status/:id',verifyToken, (req, res, next) => {
     let userId=req.params.id
     ApplicationModel.findOne({userId:userId}).then((data)=>{
       res.json(data);
@@ -49,7 +49,7 @@ router.post('/upload/:id',function(req, res, next){
    })
    })
   
-   router.get('/block/:id',async (req, res, next) => {
+   router.get('/block/:id',verifyAdminToken,async (req, res, next) => {
     let userId=req.params.id
     User.findOneAndUpdate({_id:userId},{$set:{isBlocked:true}}).then((users)=>{
       users.isBlocked=true
@@ -61,7 +61,7 @@ router.post('/upload/:id',function(req, res, next){
    })
    })
    
-   router.get('/unblock/:id',async (req, res, next) => {
+   router.get('/unblock/:id',verifyAdminToken,async (req, res, next) => {
     let userId=req.params.id
     User.findOneAndUpdate({_id:userId},{$set:{isBlocked:false}}).then((users)=>{
       users.isBlocked=false

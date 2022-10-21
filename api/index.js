@@ -13,7 +13,7 @@ dotenv.config()
 mongoose.connect(
     process.env.MONGO_URL
     ).then(()=>console.log('db connection is succesffull'))
-    .catch((err)=>console.log(err)
+    .catch((err)=>console.log(err,'fss')
 )
 
 app.use(express.json());

@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react'
 import Modal from 'react-modal'
 import Axios from 'axios';
 import NavAdmin from './NavAdmin';
-import { adminUrl } from "../../constants/constant";
+
+import { AdminRequest } from "../../constants/constant";
 
 
 
@@ -41,6 +42,7 @@ function Booking() {
     E.push({ name: 'E', slot: 'E' + i, isBooked: false })
     F.push({ name: 'F', slot: 'F' + i, isBooked: false })
   }
+  
 
   const [slotA, setSlotA] = useState(A)
   const [slotB, setSlotB] = useState(B)
@@ -50,7 +52,7 @@ function Booking() {
   const [slotF, setSlotF] = useState(F)
 
   useEffect(() => {
-    Axios.get(`${adminUrl}/slots`).then((response) => {
+    AdminRequest.get(`slots`).then((response) => {
       if (response.data) {
         setSlotA(response.data.A)
         setSlotB(response.data.B)
@@ -58,14 +60,14 @@ function Booking() {
         setSlotD(response.data.D)
         setSlotE(response.data.E)
         setSlotF(response.data.F)
-      } else {
+      }  {
   
       }
-      Axios.get(`${adminUrl}/approved`).then((response) => {
+      AdminRequest.get(`approved`).then((response) => {
         console.log(response.data,'jsdfkhjfsdjhfdhj');
         if (response.data) {
           setForms(response.data.info)
-        } else {
+        } else if(response.data.authError) {
           setErrorMessage('Something went wrong f')
         }
       }).catch((err) => {
@@ -87,7 +89,7 @@ function Booking() {
       setErrorMessage('company is not selected c')
     } else {
       console.log(selected);
-      Axios.post(`${adminUrl}/booking/${selected}`, indexof).then((response) => {
+      AdminRequest.post(`/booking/${selected}`, indexof).then((response) => {
         if (response.data) {
           console.log(indexof,'mukthar');
           let { val, index } = indexof
@@ -172,6 +174,7 @@ const Slots = ({ values, setModal, setIndex, forms }) => {
   return (
     <>
       {val.map((slotObj, index) => {
+       
         if (slotObj.isBooked || slotArr.includes(slotObj.slot)) return <div key={slotObj.slot} className='w-16 h-16 bg-gray-500'></div>;
         else return <div key={slotObj.slot} onClick={(e) => {
           setModal(true)

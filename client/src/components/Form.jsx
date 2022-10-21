@@ -4,7 +4,7 @@ import NAV from "./nav";
 import React, { useEffect, useState } from 'react'
 
 import Axios from 'axios'
-import {userUrl} from '../constants/constant'
+import {userUrl,userRequest,} from '../constants/constant'
 import { useNavigate } from 'react-router-dom'
 import  { useContext } from 'react'
 
@@ -76,7 +76,7 @@ function Form() {
 
      
 
-        Axios.post(`${userUrl}/api/users/upload/${userDetails._id}`,{...application},{ headers: {"token" : `Bearer ${token}`}}).then((response) => {
+        userRequest.post(`api/users/upload/${userDetails._id}`,{...application},{ headers: {"token" : `Bearer ${token}`}}).then((response) => {
           
           localStorage.setItem('user', JSON.stringify(response.data))
           setUserDetails(response.data)

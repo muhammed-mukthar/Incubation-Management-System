@@ -1,15 +1,19 @@
 import React, { useContext, useEffect, useState } from 'react'
 import Axios from 'axios'
 import { UserContext } from '../context/UserContext'
-import {userUrl} from '../constants/constant'
+import {userUrl,userRequest} from '../constants/constant'
 import NAV from './nav'
 function Pending() {
   const { userDetails, setUserDetails } = useContext(UserContext)
   const [form,setForm]=useState(null)
+  const [token, setToken] = useState('')
 
   useEffect(()=>{
 
-    Axios.get(`${userUrl}/api/users/status/${userDetails._id}`).then((response) => {
+    setToken(localStorage.getItem('userToken'))
+    
+
+    Axios.get(`${userUrl}/api/users/status/${userDetails._id}`,{ headers: {"token" : `Bearer ${token}`}}).then((response) => {
       if (response.data) {
         console.log(response.data);
         setForm(response.data)

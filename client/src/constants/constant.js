@@ -12,10 +12,14 @@ const ADMINTOKEN= localStorage.getItem('admintoken')
 
 
 
-
 export const userRequest=axios.create({
     baseURL:userUrl,
     header:{token:`Bearer ${TOKEN}`}
+})
+
+export const AdmimUserequest=axios.create({
+    baseURL:userUrl,
+    headers:{admintoken:`Bearer ${ADMINTOKEN}`}
 })
 
 export const AdminRequest=axios.create({

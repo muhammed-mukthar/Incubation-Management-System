@@ -2,7 +2,7 @@ import React from "react";
 import axios from "axios";
 import { useEffect } from "react";
 import NavAdmin from "./NavAdmin";
-import { userUrl } from "../../constants/constant";
+import { userUrl,AdmimUserequest } from "../../constants/constant";
 import { useState } from "react";
 
 function Usermang() {
@@ -12,7 +12,7 @@ function Usermang() {
   const [errors, SetError] = useState("");
 
   function handleunblock(userId) {
-    axios.get(`${userUrl}/api/users/unblock/${userId}`).then(({ data }) => {
+    AdmimUserequest.get(`api/users/unblock/${userId}`).then(({ data }) => {
       if (data.users) {
         setStatus(data.users);
         
@@ -22,7 +22,7 @@ function Usermang() {
     });
   }
   function handleblock(userId) {
-    axios.get(`${userUrl}/api/users/block/${userId}`).then(({ data }) => {
+    AdmimUserequest.get(`api/users/block/${userId}`).then(({ data }) => {
       if (data.users) {
         setStatus(data.users);
         
@@ -33,7 +33,7 @@ function Usermang() {
   }
 
   useEffect(() => {
-    axios.get(`${userUrl}/api/users/getusers`).then(({ data }) => {
+    AdmimUserequest.get(`api/users/getusers`).then(({ data }) => {
       if (data.users) {
         Setusers(data.users);
       } else {
