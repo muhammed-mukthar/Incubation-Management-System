@@ -1,126 +1,22 @@
-const ApplicationModel = require("../model/applicationModel");
-const Slot = require("../model/Slots");
-const Admin = require("../model/admin");
-const Cryptojs = require("crypto-js");
-const jwt = require("jsonwebtoken");
-const {verifyToken,verifyAdminToken}=require('./verifytoken')
+
+const {verifyAdminToken}=require('./verifytoken')
 const router = require("express").Router();
+const {AdminLogin,AllApplications,ApproveRequest,PendingRequests,DeclineRequest,ApprovedForm,BookingSlots,AllSolts}=require('../controller/adminController')
 
+router.post("/login",AdminLogin );
 
-router.post("/login", async (req, res) => {
-  let err = "invalid details";
+router.get("/applications",verifyAdminToken,AllApplications);
 
-  const AdminLogin = await Admin.findOne({ email: req.body.email });
-  if (!AdminLogin) {
-    res.status(401).json({ err: err });
-  } else {
-    console.log(AdminLogin);
-    const hashedPassword = Cryptojs.AES.decrypt(
-      AdminLogin.password,
-      process.env.PASS_SEC
-    );
-    const Originalpassword = hashedPassword.toString(Cryptojs.enc.Utf8);
-    if (Originalpassword != req.body.password) {
-      res.status(401).json({ err: err });
-    } else {
-      const accessToken = jwt.sign(
-        {
-          id: AdminLogin._id,
-        },
-        process.env.JWT_SEC,
-        { expiresIn: "3d" }
-      );
-      res.status(200).json({ AdminLogin, accessToken });
-    }
-  }
-});
+router.get("/approve/:id",verifyAdminToken,ApproveRequest);
 
-router.get("/applications",verifyAdminToken,async (req, res, next) => {
-let data=await  ApplicationModel.find({})
-      if(data){
-            res.json(data);
-      }else{
-        res.json({ err: err });
-      }
-});
+router.get("/decline/:id",verifyAdminToken,DeclineRequest);
 
-router.get("/approve/:id",verifyAdminToken,async (req, res, next) => {
-  const id = req.params.id;
-  ApplicationModel.findOneAndUpdate({ _id: id }, { $set: { isApproved: true } })
-    .then((data) => {
-      res.json({ data: data });
-    })
-    .catch(() => {
-      let err = "Something went wrong!";
-      res.json({ err: err });
-    });
-});
+router.get("/pending/:id",verifyAdminToken,PendingRequests);
 
-router.get("/decline/:id",verifyAdminToken,async (req, res, next) => {
-  const id = req.params.id;
-  ApplicationModel.findOneAndUpdate({ _id: id }, { $set: { isDeclined: true } })
-    .then((data) => {
-      res.json({ data: data });
-    })
-    .catch(() => {
-      let err = "Something went wrong!";
-      res.json({ err: err });
-    });
-});
+router.get("/approved",verifyAdminToken,ApprovedForm );
 
-router.get("/pending/:id",verifyAdminToken,async (req, res, next) => {
-  const id = req.params.id;
-  ApplicationModel.findOneAndUpdate({ _id: id }, { $set: { isPending: true } })
-    .then((data) => {
-      res.json({ data: data });
-    })
-    .catch(() => {
-      let err = "Something went wrong!";
-      res.json({ err: err });
-    });
-});
+router.post("/booking/:id", verifyAdminToken,BookingSlots);
 
-router.get("/approved",verifyAdminToken, async (req, res) => {
-  ApplicationModel.find({ isApproved: true })
-    .then((data) => {
-      res.json({ info: data });
-    })
-    .catch((err) => {
-      res.json(err);
-    });
-});
-
-router.post("/booking/:id", verifyAdminToken,async (req, res, next) => {
-  let appId = req.params.id;
-  let { val, index } = req.body;
-  let char = val[index].slot;
-  ApplicationModel.findOneAndUpdate(
-    { _id: appId },
-    { $set: { isBooked: true, slotId: char } }
-  )
-    .then((data) => {
-      data.isBooked = true;
-      data.slotId = char;
-      res.json({ data });
-    })
-    .catch((err) => {
-      console.log(err);
-      err = "Something went wrong!";
-      res.json({ err: err });
-    });
-});
-
-router.get("/slots",verifyAdminToken, async (req, res, next) => {
-  Slot.find()
-    .then((response) => {
-      console.log(response, "fsfssf");
-      res.json(response[0]);
-    })
-    .catch((err) => {
-      console.log(err);
-      err = "Something went wrong!";
-      res.json({ err: err });
-    });
-});
+router.get("/slots",verifyAdminToken, AllSolts);
 
 module.exports = router;
